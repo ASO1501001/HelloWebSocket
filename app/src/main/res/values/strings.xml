@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">HelloWebSocket</string>
+    <string name="messageURI">ws://153.122.101.38:8080/ws/message</string>
+</resources>
