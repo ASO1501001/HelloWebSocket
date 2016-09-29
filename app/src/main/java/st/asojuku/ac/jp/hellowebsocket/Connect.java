@@ -4,8 +4,6 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 
-import org.glassfish.tyrus.client.ClientManager;
-
 import java.io.IOException;
 import java.net.URI;
 
@@ -13,6 +11,7 @@ import javax.websocket.ClientEndpoint;
 import javax.websocket.ContainerProvider;
 import javax.websocket.DeploymentException;
 import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
@@ -45,8 +44,8 @@ public class Connect extends AsyncTask<Void,Void,Void> {
         URI uri = URI.create("ws://153.122.101.38:8080/ws/message");
 
         try {
-            session = webSocketContainer.connectToServer(new Connect(),uri);
-
+            session = webSocketContainer.connectToServer(this,uri);
+            System.out.println("1"+this.callBack);
         } catch (DeploymentException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -64,8 +63,8 @@ public class Connect extends AsyncTask<Void,Void,Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        callBack.finish();
-
+        //callBack.finish();
+        System.out.println("2"+this.callBack);
 //        try {
 //            session.getBasicRemote().sendText("kkkkkkkk");
 //        } catch (IOException e) {
@@ -95,7 +94,31 @@ public class Connect extends AsyncTask<Void,Void,Void> {
     @OnMessage
     public void onMessage(String message){
         Log.d("Message",message);
-        this.callBack.setTextView(message);
+        System.out.println("0"+callBack);
+        System.out.println("3"+session);
+        System.out.println("4"+this);
+
+
+        callBack.setTextView("aaaaaaa");
+
+        AsyncTask<Connect,Void,Void> onme = new AsyncTask<Connect, Void, Void>() {
+            @Override
+            protected Void doInBackground(Connect... params) {
+                params[0].callBack.setTextView("aaaaaaa");
+                return null;
+            }
+        };
+
+        onme.execute(this);
+    }
+    @OnOpen
+    public void onOpen(){
+        System.out.println("onOpen"+session);
+    }
+
+
+    public void onm(String message){
+
     }
 
     public void sendMessage(String message){

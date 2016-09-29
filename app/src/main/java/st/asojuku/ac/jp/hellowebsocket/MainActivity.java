@@ -15,6 +15,7 @@ import javax.websocket.ClientEndpoint;
 import javax.websocket.ContainerProvider;
 import javax.websocket.DeploymentException;
 import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
@@ -45,12 +46,14 @@ public class MainActivity extends AppCompatActivity {
 
                 connect.sendMessage("Click Button!");
                 //connect2.sendMessage("Click Button!");
+                connect.onMessage("テスト");
             }
         });
 
         textView = (TextView)findViewById(R.id.text);
 
         connect = new Connect();
+
         connect.setFinish(new Connect.CallBack(){
             @Override
             public void finish(){
@@ -86,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 send.execute(connect.getSession());
+                System.out.println(connect.callBack);
 
 
 
